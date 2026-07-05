@@ -8,6 +8,7 @@ from controllers.auth_controller import update_user
 from controllers.auth_controller import delete_user
 from models.refresh_model import RefreshToken
 from controllers.auth_controller import refresh_access_token
+from controllers.auth_controller import logout
 
 router = APIRouter()
 
@@ -68,3 +69,7 @@ def delete_account(
 @router.post("/refresh")
 def refresh(data: RefreshToken):
     return refresh_access_token(data.refresh_token)
+
+@router.post("/logout")
+def logout():
+    return logout()

@@ -140,3 +140,8 @@ def refresh_access_token(refresh_token):
         return {
             "message": "Invalid Refresh Token"
         }
+    
+def logout():
+       return {
+        "message": "Logout Successful"
+    }
