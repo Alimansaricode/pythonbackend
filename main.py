@@ -11,7 +11,7 @@
 from fastapi import FastAPI
 from routes.auth_routes import router
 from routes.upload_routes import router as upload_router
-
+from fastapi.staticfiles import StaticFiles #mount (Images, PDF, CSS, JS)
 app = FastAPI()
 
 # Authentication Routes
@@ -19,3 +19,9 @@ app.include_router(router)
 
 # Upload Routes
 app.include_router(upload_router)
+# Static Files
+app.mount(
+    "/uploads",
+    StaticFiles(directory="uploads"),
+    name="uploads"
+)

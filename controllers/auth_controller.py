@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 
+
 load_dotenv()
 SECRET_KEY = os.getenv("JWT_SECRET")
 
@@ -145,3 +146,47 @@ def logout():
        return {
         "message": "Logout Successful"
     }
+
+def update_profile_image(email, image_path):
+
+    result = users.update_one(
+        {"email": email},
+        {
+            "$set": {
+                "profile_image": image_path
+            }
+        }
+    )
+
+    print("Matched:", result.matched_count)
+    print("Modified:", result.modified_count)
+
+    return {
+        "message": "Profile Image Updated"
+    }
+# new function to get user profile
+def get_profile(email):
+
+    user = users.find_one(
+        {"email": email},
+        {
+            "_id": 0,
+            "password": 0
+        }
+    )
+
+    return user
+#user
+def get_all_users():
+
+    users_list = list(
+        users.find(
+            {},
+            {
+                "_id": 0,
+                "password": 0
+            }
+        )
+    )
+
+    return users_list
