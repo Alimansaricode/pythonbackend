@@ -1,3 +1,9 @@
+
+from controllers.auth_controller import filter_users
+from fastapi import Query
+from controllers.auth_controller import sort_users
+from fastapi import Query
+from controllers.auth_controller import search_users
 from controllers.auth_controller import get_profile
 from fastapi import APIRouter, Depends
 from models.user_model import User
@@ -12,6 +18,7 @@ from controllers.auth_controller import refresh_access_token
 from controllers.auth_controller import logout
 from controllers.auth_controller import get_all_users
 router = APIRouter()
+from fastapi import Query
 
 
 @router.post("/signup")
@@ -81,3 +88,24 @@ def logout():
 @router.get("/users")
 def all_users(user=Depends(verify_token)):
     return get_all_users()
+
+@router.get("/search-users")
+def search(
+    search: str = Query(...),
+    user=Depends(verify_token)
+):
+    return search_users(search)
+
+@router.get("/users-sort")
+def users_sort(
+    order: str = Query("asc"),
+    user=Depends(verify_token)
+):
+    return sort_users(order)
+
+@router.get("/filter-users")
+def filter_user(
+    email: str = Query(...),
+    user=Depends(verify_token)
+):
+    return filter_users(email)

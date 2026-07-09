@@ -190,3 +190,71 @@ def get_all_users():
     )
 
     return users_list
+
+def search_users(search):
+    users_list = list(
+        users.find(
+            {
+                "$or": [
+                    {"name": {"$regex": search, "$options": "i"}},
+                    {"email": {"$regex": search, "$options": "i"}}
+                ]
+            },
+            {
+                "_id": 0,
+                "password": 0
+            }
+        )
+    )
+
+    return users_list
+
+def get_users_paginated(page, limit):
+    skip = (page - 1) * limit
+
+    users_list = list(
+        users.find(
+            {},
+            {
+                "_id": 0,
+                "password": 0
+            }
+        ).skip(skip).limit(limit)
+    )
+
+    return users_list
+
+def sort_users(order):
+
+    if order == "asc":
+        sort_order = 1
+    else:
+        sort_order = -1
+
+    users_list = list(
+        users.find(
+            {},
+            {
+                "_id": 0,
+                "password": 0
+            }
+        ).sort("name", sort_order)
+    )
+
+    return users_list
+
+def filter_users(email):
+
+    users_list = list(
+        users.find(
+            {
+                "email": email
+            },
+            {
+                "_id": 0,
+                "password": 0
+            }
+        )
+    )
+
+    return users_list
